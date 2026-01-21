@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.Date;
+import java.sql.Date;
 
 @Data
 @AllArgsConstructor
@@ -13,9 +13,9 @@ import java.util.Date;
 @ToString
 public class OrderInfoDTO {
     private String orderID;
-
-    private Date orderDate;
-
+    private String orderDate;
     private String custID;
 
+    public OrderInfoDTO(String orderID, Date orderDate, String custID) {
+    }
 }
