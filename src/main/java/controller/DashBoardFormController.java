@@ -43,7 +43,22 @@ public class DashBoardFormController {
     }
 
     @FXML
-    void btnItemManagementOnAction(ActionEvent event) {
+    void btnItemManagementOnAction(ActionEvent event) throws IOException {
+
+        Parent rootNode = null;
+        try {
+            rootNode = FXMLLoader.load(this.getClass().getResource("/view/item_info.fxml"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Scene scene = new Scene(rootNode);
+
+
+        stage.setScene(scene);
+        stage.setTitle("Item Management");
+
+        stage.show();
 
     }
 

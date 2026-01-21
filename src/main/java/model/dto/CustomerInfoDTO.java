@@ -5,16 +5,28 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 public class CustomerInfoDTO {
-    private String customerId;
+    private String custId;
 
-    private String type;
+    private String CustTitle ;
 
-    private String description;
+    private String CustName;
 
-    private double price;
+    private Date DOB;
+
+    private double Salary;
+
+    private String CustAddress;
+
+    private String City;
+
+    private String Province;
+
+    private String PostalCode;
 }

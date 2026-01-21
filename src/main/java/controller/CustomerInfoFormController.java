@@ -4,66 +4,199 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 import model.dto.CustomerInfoDTO;
 
-import java.io.IOException;
+import java.net.URL;
+import java.sql.*;
+import java.util.ResourceBundle;
 
-public class CustomerInfoFormController {
+public class CustomerInfoFormController implements Initializable {
 
-    ObservableList<CustomerInfoDTO> customerInfoDTOS = FXCollections.observableArrayList(
-
-            new CustomerInfoDTO ("C001", "Dialy","Red row", 190.0),
-            new CustomerInfoDTO ("C002", "Baby Item","Saop", 250.0),
-            new CustomerInfoDTO ("C003", "Spaicy","Red Chilli", 300.0),
-            new CustomerInfoDTO ("C004", "Dialy","Snack", 100.0)
-
-
-    );
-
-
-    Stage stage = new Stage();
+    ObservableList<CustomerInfoDTO> customerInfoDTOS = FXCollections.observableArrayList();
 
     @FXML
-    private TableColumn<?, ?> colCustomerId;
+    private TableColumn<?, ?> colCity;
 
     @FXML
-    private TableColumn<?, ?> colDescription;
+    private TableColumn<?, ?> colCustAddress;
 
     @FXML
-    private TableColumn<?, ?> colPrice;
+    private TableColumn<?, ?> colCustId;
 
     @FXML
-    private TableColumn<?, ?> colType;
+    private TableColumn<?, ?> colCustName;
+
+    @FXML
+    private TableColumn<?, ?> colCustTitle;
+
+    @FXML
+    private TableColumn<?, ?> colDOB;
+
+    @FXML
+    private TableColumn<?, ?> colPostalCode;
+
+    @FXML
+    private TableColumn<?, ?> colProvince;
+
+    @FXML
+    private TableColumn<?, ?> colSalary;
 
     @FXML
     private TableView<CustomerInfoDTO> tblCustomerInfo;
 
     @FXML
-    void btnReloadOnAction(ActionEvent event) throws IOException {
+    private TextField txtCity;
 
-        colCustomerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-        colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
-        colType.setCellValueFactory(new PropertyValueFactory<>("type"));
-        colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+    @FXML
+    private TextField txtCustAdderss;
+
+    @FXML
+    private TextField txtCustId;
+
+    @FXML
+    private TextField txtCustName;
+
+    @FXML
+    private TextField txtCustTitle;
+
+    @FXML
+    private TextField txtDOB;
+
+    @FXML
+    private TextField txtPostalCode;
+
+    @FXML
+    private TextField txtProvince;
+
+    @FXML
+    private TextField txtSalary;
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        colCustId.setCellValueFactory(new PropertyValueFactory<>("custId"));
+        colCustTitle.setCellValueFactory(new PropertyValueFactory<>("custTitle"));
+        colCustName.setCellValueFactory(new PropertyValueFactory<>("custName"));
+        colDOB.setCellValueFactory(new PropertyValueFactory<>("DOB"));
+        colSalary.setCellValueFactory(new PropertyValueFactory<>("salary"));
+        colCustAddress.setCellValueFactory(new PropertyValueFactory<>("custAddress"));
+        colCity.setCellValueFactory(new PropertyValueFactory<>("city"));
+        colProvince.setCellValueFactory(new PropertyValueFactory<>("province"));
+        colPostalCode.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
 
         tblCustomerInfo.setItems(customerInfoDTOS);
 
+        tblCustomerInfo.getSelectionModel().selectedItemProperty().addListener(((observableValue, oldValue, newValue) -> {
 
+            if(newValue != null){
+                txtCustId.setText(newValue.getCustId());
+                txtCustTitle.setText(newValue.getCustTitle());
+                txtCustName.setText(newValue.getCustName());
+                txtDOB.setText(String.valueOf(newValue.getDOB()));
+                txtSalary.setText(String.valueOf(newValue.getSalary()));
+                txtCustAdderss.setText(newValue.getCustAddress());
+                txtCity.setText(newValue.getCity());
+                txtProvince.setText(newValue.getProvince());
+                txtPostalCode.setText(newValue.getPostalCode());
 
+            }
+        }));
+
+        loadTable();
+    }
+
+    private void loadTable() {
+        customerInfoDTOS.clear();
         try {
-            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource(""))));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/thogakade", "root", "1234");
+
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM customer");
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                customerInfoDTOS.add(new CustomerInfoDTO(
+                        resultSet.getString("CustID"),
+                        resultSet.getString("CustTitle"),
+                        resultSet.getString("CustName"),
+                        resultSet.getDate("DOB"),
+                        resultSet.getDouble("salary"),
+                        resultSet.getString("CustAddress"),
+                        resultSet.getString("City"),
+                        resultSet.getString("Province"),
+                        resultSet.getString("PostalCode")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        stage.show();
+    }
+
+    @FXML
+    void btnReloadOnAction(ActionEvent event) {
+
+        loadTable();
+    }
+
+    @FXML
+    void btnAddOnAction(ActionEvent event) {
+
+        String custId = txtCustId.getText();
+        String custTitle = txtCustTitle.getText();
+        String custName = txtCustName.getText();
+        Date DOB = Date.valueOf(txtDOB.getText());
+        double salary = Double.parseDouble(txtSalary.getText());
+        String custAddress = txtCustAdderss.getText();
+        String city = txtCity.getText();
+        String province = txtProvince.getText();
+        String postalcode = txtPostalCode.getText();
+
+        CustomerInfoDTO customerInfoDTO = new CustomerInfoDTO(custId, custTitle, custName, DOB,salary, custAddress, city,province,postalcode  );
+
+        customerInfoDTOS.add(customerInfoDTO);
+
+        clearField();
 
     }
 
-}
+    @FXML
+    void btnDeleteOnAction(ActionEvent event) {
+        CustomerInfoDTO seCustomerInfoDTO = tblCustomerInfo.getSelectionModel().getSelectedItem();
+        customerInfoDTOS.remove(seCustomerInfoDTO);
+    }
 
+    @FXML
+    void btnUpdateOnAction(ActionEvent event) {
+        CustomerInfoDTO selectItem = tblCustomerInfo.getSelectionModel().getSelectedItem();
+
+        selectItem.setCustId(txtCustId.getText());
+        selectItem.setCustTitle(txtCustTitle.getText());
+        selectItem.setCustName(txtCustName.getText());
+        selectItem.setDOB(Date.valueOf(txtDOB.getText()));
+        selectItem.setSalary(Double.parseDouble(txtSalary.getText()));
+        selectItem.setCity(txtCity.getText());
+        selectItem.setProvince(txtProvince.getText());
+        selectItem.setPostalCode(txtPostalCode.getText());
+
+        tblCustomerInfo.refresh();
+
+        clearField();
+
+    }
+
+    public void clearField(){
+        txtCustId.clear();
+        txtCustTitle.clear();
+        txtCustName.clear();
+        txtDOB.clear();
+        txtSalary.clear();
+        txtCustAdderss.clear();
+        txtCity.clear();
+        txtProvince.clear();
+        txtPostalCode.clear();
+    }
+}

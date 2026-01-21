@@ -22,10 +22,20 @@ public class LoginInfoFormController {
 
     @FXML
     void btnLoginOnAction(ActionEvent event) throws IOException {
+            String userName = txtUserName.getText();
+            String password = txtPassword.getText();
 
-        stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/dashboard_form.fxml"))));
-        stage.show();
-        stage.setTitle("YR Food City");
+            if (userName.equals("hashini") && password.equals("1234")) {
+
+                Stage stage = (Stage) txtUserName.getScene().getWindow();
+                stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/dashboard_form.fxml"))));
+                stage.setTitle("YR Food City");
+                stage.show();
+
+            } else {
+                new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR, "Username or Password wrong!").show();
+            }
     }
-
 }
+
+
