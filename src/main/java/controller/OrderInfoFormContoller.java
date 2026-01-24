@@ -113,7 +113,7 @@ public class OrderInfoFormContoller implements Initializable {
         OrderInfoDTO selectItem = tblOrderInfo.getSelectionModel().getSelectedItem();
         if(selectItem != null) {
             selectItem.setOrderID(txtOrderID.getText());
-            selectItem.setOrderDate(txtOrderDate.getText());
+            selectItem.setOrderDate(Date.valueOf(txtOrderDate.getText()));
             selectItem.setCustID(txtCustID.getText());
             tblOrderInfo.refresh();
             clearFeild();
