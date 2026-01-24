@@ -15,7 +15,4 @@ public class OrderInfoDTO {
     private String orderID;
     private String orderDate;
     private String custID;
-
-    public OrderInfoDTO(String orderID, Date orderDate, String custID) {
-    }
 }

@@ -13,7 +13,6 @@ import model.dto.OrderInfoDTO;
 
 import java.net.URL;
 import java.sql.*;
-import java.util.Date;
 import java.util.ResourceBundle;
 
 public class OrderInfoFormContoller implements Initializable {
@@ -71,13 +70,13 @@ public class OrderInfoFormContoller implements Initializable {
 
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/thogakade","root","1234");
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM orders");
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 orderInfoDTOS.add(new OrderInfoDTO(
                         resultSet.getString("OrderID"),
-                        resultSet.getDate("OrderDate"),
+                        resultSet.getString("OrderDate"),
                         resultSet.getString("CustID")
 
                 ));
@@ -121,7 +120,7 @@ public class OrderInfoFormContoller implements Initializable {
 
         OrderInfoDTO selectItem = tblOrderInfo.getSelectionModel().getSelectedItem();
         selectItem.setOrderID(txtOrderID.getText());
-        selectItem.setOrderDate(txtOrderDate.getText());
+        selectItem.setOrderDate(String.valueOf(Date.valueOf(txtOrderDate.getText())));
         selectItem.setCustID(txtCustID.getText());
 
         tblOrderInfo.refresh();
