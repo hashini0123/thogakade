@@ -67,7 +67,6 @@ public class OrderInfoFormContoller implements Initializable {
 
     public void loadTableOrder() throws SQLException {
         orderInfoDTOS.clear();
-
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/thogakade","root","1234");
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM orders");
@@ -78,13 +77,10 @@ public class OrderInfoFormContoller implements Initializable {
                         resultSet.getString("OrderID"),
                         resultSet.getString("OrderDate"),
                         resultSet.getString("CustID")
-
                 ));
-
             }
-
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
 
@@ -96,14 +92,11 @@ public class OrderInfoFormContoller implements Initializable {
 
     @FXML
     void btnAddOnAction(ActionEvent event) {
-        String orderID = txtOrderID.getText();
-        String orderDate = txtOrderDate.getText();
-        String custID = txtCustID.getText();
-
-        OrderInfoDTO orderInfoDTO = new OrderInfoDTO(orderID, orderDate, custID);
-
-        orderInfoDTOS.add(orderInfoDTO);
-
+        orderInfoDTOS.add(new OrderInfoDTO(
+                txtOrderID.getText(),
+                txtOrderDate.getText(),
+                txtCustID.getText()
+        ));
         clearFeild();
     }
 
@@ -117,15 +110,14 @@ public class OrderInfoFormContoller implements Initializable {
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
-
         OrderInfoDTO selectItem = tblOrderInfo.getSelectionModel().getSelectedItem();
-        selectItem.setOrderID(txtOrderID.getText());
-        selectItem.setOrderDate(String.valueOf(Date.valueOf(txtOrderDate.getText())));
-        selectItem.setCustID(txtCustID.getText());
-
-        tblOrderInfo.refresh();
-
-        clearFeild();
+        if(selectItem != null) {
+            selectItem.setOrderID(txtOrderID.getText());
+            selectItem.setOrderDate(txtOrderDate.getText());
+            selectItem.setCustID(txtCustID.getText());
+            tblOrderInfo.refresh();
+            clearFeild();
+        }
     }
 
         public void clearFeild(){
