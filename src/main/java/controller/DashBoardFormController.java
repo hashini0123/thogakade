@@ -68,8 +68,22 @@ public class DashBoardFormController {
     }
 
     @FXML
-    void btnOrderManagementOnAction(ActionEvent event) {
+    void btnOrderManagementOnAction(ActionEvent event) throws IOException {
+        Stage newStage = new Stage();
 
+        Parent rootNode = null;
+        try {
+            rootNode = FXMLLoader.load(this.getClass().getResource("/view/order_info.fxml"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Scene scene = new Scene(rootNode);
+
+        stage.setScene(scene);
+        stage.setTitle("Order Management");
+
+        stage.show();
 
     }
 
