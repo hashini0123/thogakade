@@ -13,6 +13,9 @@ import java.sql.Date;
 @ToString
 public class OrderInfoDTO {
     private String orderID;
-    private Date orderDate; // මෙතන String තිබුණොත් අයින් කරලා Date (java.sql.Date) දාන්න
+    private Date orderDate;
     private String custID;
+
+    public OrderInfoDTO(String text, String text1, String text2) {
+    }
 }
