@@ -48,28 +48,47 @@ public class DashBoardFormController {
         Parent rootNode = null;
         try {
             rootNode = FXMLLoader.load(this.getClass().getResource("/view/item_info.fxml"));
+
+            Scene scene = new Scene(rootNode);
+
+
+            stage.setScene(scene);
+            stage.setTitle("Item Management");
+
+            stage.show();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        Scene scene = new Scene(rootNode);
-
-
-        stage.setScene(scene);
-        stage.setTitle("Item Management");
-
-        stage.show();
-
     }
 
     @FXML
-    void btnOrderDetailManagementOnAction(ActionEvent event) {
+    void btnOrderDetailManagementOnAction(ActionEvent event) throws IOException {
+
+       // Stage newStage = new Stage();
+
+        Parent rootNode = null;
+
+        try {
+            rootNode = FXMLLoader.load(this.getClass().getResource("/view/order_details_info.fxml"));
+
+            Scene scene = new Scene(rootNode);
+
+            stage.setScene(scene);
+            stage.setTitle("Order Details Management");
+            stage.show();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
 
     }
 
     @FXML
     void btnOrderManagementOnAction(ActionEvent event) throws IOException {
-        Stage newStage = new Stage();
+
+       // Stage newStage = new Stage();
 
         Parent rootNode = null;
         try {
