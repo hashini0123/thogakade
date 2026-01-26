@@ -95,21 +95,50 @@ public class OrderInfoFormContoller implements Initializable {
     @FXML
     void btnAddOnAction(ActionEvent event) {
 
+        String orderID = txtOrderID.getText();
+        String orderDate = txtOrderDate.getText();
+        String custID = txtCustID.getText();
+
+        tblOrderInfo.refresh();
+
+        clearField();
+
     }
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
 
+        OrderInfoDTO xeOrderInfoDTO = tblOrderInfo.getSelectionModel().getSelectedItem();
+        orderInfoDTOS.remove(xeOrderInfoDTO);
+
     }
 
     @FXML
-    void btnReloadOnAction(ActionEvent event) {
+    void btnReloadOnAction(ActionEvent event) throws SQLException {
+
+        loadTableOrder();
 
     }
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
 
+        OrderInfoDTO selectItem = tblOrderInfo.getSelectionModel().getSelectedItem();
+
+        selectItem.setOrderID(txtOrderID.getText());
+        selectItem.setOrderDate(Date.valueOf(txtOrderDate.getText()));
+        selectItem.setCustID(txtCustID.getText());
+
+        tblOrderInfo.refresh();
+
+        clearField();
+
+    }
+
+    public void clearField(){
+        txtOrderID.clear();
+        txtOrderDate.clear();
+        txtCustID.clear();
     }
 
 }
