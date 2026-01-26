@@ -98,6 +98,17 @@ public class OrderDetailsInfoFormController implements Initializable {
 
     @FXML
     void btnAddOnAction(ActionEvent event) {
+        String orderID = txtOrderID.getText();
+        String itemCode = txtItemCode.getText();
+        Integer orderQty = Integer.valueOf(txtOrderQty.getText());
+        Integer discount = Integer.valueOf(txtDiscount.getText());
+
+        OrderDetailsInfoDTO orderDetailsInfoDTO = new OrderDetailsInfoDTO(orderID,itemCode,orderQty,discount);
+
+        orderDetailsInfoDTOS.add(orderDetailsInfoDTO);
+
+
+        clearFiled();
 
 
     }
@@ -115,6 +126,13 @@ public class OrderDetailsInfoFormController implements Initializable {
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
 
+    }
+
+    public void clearFiled(){
+        txtOrderID.clear();
+        txtItemCode.clear();
+        txtOrderQty.clear();
+        txtDiscount.clear();
     }
 
 
