@@ -84,8 +84,8 @@ public class OrderDetailsInfoFormController implements Initializable {
                 orderDetailsInfoDTOS.add(new OrderDetailsInfoDTO(
                         resultSet.getString("OrderID"),
                         resultSet.getString("ItemCode"),
-                        resultSet.getInt("Discount"),
-                        resultSet.getInt("OrderQty")
+                        resultSet.getInt("OrderQty"),
+                        resultSet.getInt("Discount")
                 ));
             }
         } catch (SQLException e) {
