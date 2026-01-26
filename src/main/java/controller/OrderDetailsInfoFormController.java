@@ -115,7 +115,8 @@ public class OrderDetailsInfoFormController implements Initializable {
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-
+        OrderDetailsInfoDTO aeOrderDetailsInfoDTO = tblOrderDetailsInfo.getSelectionModel().getSelectedItem();
+        orderDetailsInfoDTOS.remove(aeOrderDetailsInfoDTO);
     }
 
     @FXML
