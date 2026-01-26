@@ -98,6 +98,7 @@ public class OrderDetailsInfoFormController implements Initializable {
 
     @FXML
     void btnAddOnAction(ActionEvent event) {
+
         String orderID = txtOrderID.getText();
         String itemCode = txtItemCode.getText();
         Integer orderQty = Integer.valueOf(txtOrderQty.getText());
@@ -107,25 +108,37 @@ public class OrderDetailsInfoFormController implements Initializable {
 
         orderDetailsInfoDTOS.add(orderDetailsInfoDTO);
 
-
         clearFiled();
-
 
     }
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
+
         OrderDetailsInfoDTO aeOrderDetailsInfoDTO = tblOrderDetailsInfo.getSelectionModel().getSelectedItem();
         orderDetailsInfoDTOS.remove(aeOrderDetailsInfoDTO);
+
     }
 
     @FXML
-    void btnReloadOnAction(ActionEvent event) {
+    void btnReloadOnAction(ActionEvent event) throws SQLException {
 
+        loadTableOrderDetails();
     }
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
+
+        OrderDetailsInfoDTO selectItem = tblOrderDetailsInfo.getSelectionModel().getSelectedItem();
+
+        selectItem.setOrderID(txtOrderID.getText());
+        selectItem.setItemCode(txtItemCode.getText());
+        selectItem.setOrderQty(Integer.valueOf(txtOrderQty.getText()));
+        selectItem.setDiscount(Integer.valueOf(txtDiscount.getText()));
+
+        tblOrderDetailsInfo.refresh();
+
+        clearFiled();
 
     }
 
