@@ -61,14 +61,13 @@ public class OrderDetailsInfoFormController implements Initializable {
                 txtOrderQty.setText(String.valueOf(newValue.getOrderQty()));
                 txtDiscount.setText(String.valueOf(newValue.getDiscount()));
             }
-
-            try {
-                loadTableOrderDetails();
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-
         });
+
+        try {
+            loadTableOrderDetails();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
