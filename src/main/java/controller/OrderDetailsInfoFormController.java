@@ -47,6 +47,7 @@ public class OrderDetailsInfoFormController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         colOrderID.setCellValueFactory(new PropertyValueFactory<>("orderID"));
         colItemCode.setCellValueFactory(new PropertyValueFactory<>("itemCode"));
         colOrderQty.setCellValueFactory(new PropertyValueFactory<>("orderQty"));

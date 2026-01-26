@@ -2,18 +2,20 @@ package controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.Initializable;
-import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.dto.OrderInfoDTO;
 
 import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
+
+import static java.lang.String.*;
 
 public class OrderInfoFormContoller implements Initializable {
 
@@ -42,6 +44,7 @@ public class OrderInfoFormContoller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         colOrderID.setCellValueFactory(new PropertyValueFactory<>("orderID"));
         colOrderDate.setCellValueFactory(new PropertyValueFactory<>("orderDate"));
         colCustID.setCellValueFactory(new PropertyValueFactory<>("custID"));
@@ -49,13 +52,13 @@ public class OrderInfoFormContoller implements Initializable {
         tblOrderInfo.setItems(orderInfoDTOS);
 
         tblOrderInfo.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) ->{
+
             if(newValue != null){
                 txtOrderID.setText(newValue.getOrderID());
                 txtOrderDate.setText(String.valueOf(newValue.getOrderDate()));
                 txtCustID.setText(newValue.getCustID());
 
             }
-
                 });
 
         try {
@@ -67,63 +70,47 @@ public class OrderInfoFormContoller implements Initializable {
 
     public void loadTableOrder() throws SQLException {
         orderInfoDTOS.clear();
+
+        Connection connection = null;
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/thogakade","root","1234");
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM orders");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/thogakade","root","1234");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM orderdetail");
 
             ResultSet resultSet = preparedStatement.executeQuery();
+
             while (resultSet.next()){
                 orderInfoDTOS.add(new OrderInfoDTO(
-                        resultSet.getString("OrderID"),
-                        resultSet.getString("OrderDate"),
+                        resultSet.getString("Order ID"),
+                        resultSet.getDate("OrderDate"),
                         resultSet.getString("CustID")
                 ));
             }
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-    }
 
-    @FXML
-    void BtnReloadOnAction(ActionEvent event) throws SQLException {
-
-        loadTableOrder();
     }
 
     @FXML
     void btnAddOnAction(ActionEvent event) {
-        orderInfoDTOS.add(new OrderInfoDTO(
-                txtOrderID.getText(),
-                txtOrderDate.getText(),
-                txtCustID.getText()
-        ));
-        clearFeild();
+
     }
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
 
-        OrderInfoDTO xeOrderInfoDTO = tblOrderInfo.getSelectionModel().getSelectedItem();
-        orderInfoDTOS.remove(xeOrderInfoDTO);
+    }
+
+    @FXML
+    void btnReloadOnAction(ActionEvent event) {
 
     }
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
-        OrderInfoDTO selectItem = tblOrderInfo.getSelectionModel().getSelectedItem();
-        if(selectItem != null) {
-            selectItem.setOrderID(txtOrderID.getText());
-            selectItem.setOrderDate(Date.valueOf(txtOrderDate.getText()));
-            selectItem.setCustID(txtCustID.getText());
-            tblOrderInfo.refresh();
-            clearFeild();
-        }
+
     }
 
-        public void clearFeild(){
-            txtOrderID.clear();
-            txtOrderDate.clear();
-            txtCustID.clear();
-        }
 }
 
