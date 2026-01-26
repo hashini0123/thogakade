@@ -62,9 +62,13 @@ public class OrderDetailsInfoFormController implements Initializable {
                 txtDiscount.setText(String.valueOf(newValue.getDiscount()));
             }
 
-            loadTableOrderDetails();
+            try {
+                loadTableOrderDetails();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
 
-                });
+        });
 
     }
 
@@ -79,7 +83,10 @@ public class OrderDetailsInfoFormController implements Initializable {
 
             while (resultSet.next()){
                 orderDetailsInfoDTOS.add(new OrderDetailsInfoDTO(
-
+                        resultSet.getString("OrderID"),
+                        resultSet.getString("ItemCode"),
+                        resultSet.getInt("Discount"),
+                        resultSet.getInt("OrderQty")
                 ));
             }
         } catch (SQLException e) {
@@ -91,6 +98,7 @@ public class OrderDetailsInfoFormController implements Initializable {
 
     @FXML
     void btnAddOnAction(ActionEvent event) {
+
 
     }
 

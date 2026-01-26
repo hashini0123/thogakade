@@ -17,4 +17,6 @@ public class OrderDetailsInfoDTO {
     private Integer orderQty;
     private Integer discount;
 
+    public OrderDetailsInfoDTO(String orderID, String itemCode, int discount) {
+    }
 }
