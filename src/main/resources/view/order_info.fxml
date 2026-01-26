@@ -27,6 +27,6 @@
       <Button layoutX="40.0" layoutY="174.0" mnemonicParsing="false" onAction="#btnAddOnAction" prefHeight="26.0" prefWidth="119.0" text="Add" />
       <Button layoutX="206.0" layoutY="174.0" mnemonicParsing="false" onAction="#btnUpdateOnAction" prefHeight="26.0" prefWidth="119.0" text="Update" />
       <Button layoutX="366.0" layoutY="174.0" mnemonicParsing="false" onAction="#btnDeleteOnAction" prefHeight="26.0" prefWidth="119.0" text="Delete" />
-      <Button layoutX="527.0" layoutY="174.0" mnemonicParsing="false" onAction="#BtnReloadOnAction" prefHeight="26.0" prefWidth="119.0" text="Reload" />
+      <Button layoutX="527.0" layoutY="174.0" mnemonicParsing="false" onAction="#btnReloadOnAction" prefHeight="26.0" prefWidth="119.0" text="Reload" />
    </children>
 </AnchorPane>

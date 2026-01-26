@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -74,13 +75,13 @@ public class OrderInfoFormContoller implements Initializable {
         Connection connection = null;
         try {
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/thogakade","root","1234");
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM orderdetail");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM orders");
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()){
                 orderInfoDTOS.add(new OrderInfoDTO(
-                        resultSet.getString("Order ID"),
+                        resultSet.getString("OrderID"),
                         resultSet.getDate("OrderDate"),
                         resultSet.getString("CustID")
                 ));
@@ -93,13 +94,17 @@ public class OrderInfoFormContoller implements Initializable {
     }
 
     @FXML
-    void btnAddOnAction(ActionEvent event) {
+    void btnAddOnAction(ActionEvent event) throws SQLException {
 
         String orderID = txtOrderID.getText();
         String orderDate = txtOrderDate.getText();
         String custID = txtCustID.getText();
 
-        tblOrderInfo.refresh();
+        OrderInfoDTO orderInfoDTO = new OrderInfoDTO(orderID,orderDate,custID);
+
+        orderInfoDTOS.add(orderInfoDTO);
+
+       loadTableOrder();
 
         clearField();
 
@@ -122,17 +127,26 @@ public class OrderInfoFormContoller implements Initializable {
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
-
         OrderInfoDTO selectItem = tblOrderInfo.getSelectionModel().getSelectedItem();
 
-        selectItem.setOrderID(txtOrderID.getText());
-        selectItem.setOrderDate(Date.valueOf(txtOrderDate.getText()));
-        selectItem.setCustID(txtCustID.getText());
+        if (selectItem == null) {
+            new Alert(Alert.AlertType.WARNING, "Please select a row to update!").show();
+            return;
+        }
 
-        tblOrderInfo.refresh();
+        try {
+            selectItem.setOrderID(txtOrderID.getText());
+            selectItem.setOrderDate(Date.valueOf(txtOrderDate.getText()));
+            selectItem.setCustID(txtCustID.getText());
 
-        clearField();
+            tblOrderInfo.refresh();
+            clearField();
 
+            new Alert(Alert.AlertType.INFORMATION, "Table Updated Successfully!").show();
+
+        } catch (IllegalArgumentException e) {
+            new Alert(Alert.AlertType.ERROR, "Invalid Date! Please use YYYY-MM-DD format.").show();
+        }
     }
 
     public void clearField(){
