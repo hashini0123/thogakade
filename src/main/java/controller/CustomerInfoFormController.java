@@ -112,14 +112,12 @@ public class CustomerInfoFormController implements Initializable {
     }
 
     private void loadTable() {
-        customerController.getAllCustomers();
-        customerInfoDTOS.clear();
-
+        tblCustomerInfo.setItems(customerController.getAllCustomers());
     }
 
     @FXML
     void btnReloadOnAction(ActionEvent event) {
-        tblCustomerInfo.setItems(customerController.getAllCustomers() );
+        loadTable();
     }
 
     @FXML
