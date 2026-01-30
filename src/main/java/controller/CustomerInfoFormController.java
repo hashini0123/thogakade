@@ -16,6 +16,7 @@ import java.sql.*;
 import java.util.ResourceBundle;
 
 public class CustomerInfoFormController implements Initializable {
+    CustomerController customerController = new CustomerController();
 
     ObservableList<CustomerInfoDTO> customerInfoDTOS = FXCollections.observableArrayList();
 
@@ -111,14 +112,14 @@ public class CustomerInfoFormController implements Initializable {
     }
 
     private void loadTable() {
+        customerController.getAllCustomers();
         customerInfoDTOS.clear();
 
     }
 
     @FXML
     void btnReloadOnAction(ActionEvent event) {
-
-        loadTable();
+        tblCustomerInfo.setItems(customerController.getAllCustomers() );
     }
 
     @FXML
