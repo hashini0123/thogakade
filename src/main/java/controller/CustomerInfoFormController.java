@@ -112,28 +112,7 @@ public class CustomerInfoFormController implements Initializable {
 
     private void loadTable() {
         customerInfoDTOS.clear();
-        try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/thogakade", "root", "1234");
 
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM customer");
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                customerInfoDTOS.add(new CustomerInfoDTO(
-                        resultSet.getString("CustID"),
-                        resultSet.getString("CustTitle"),
-                        resultSet.getString("CustName"),
-                        resultSet.getDate("DOB"),
-                        resultSet.getDouble("salary"),
-                        resultSet.getString("CustAddress"),
-                        resultSet.getString("City"),
-                        resultSet.getString("Province"),
-                        resultSet.getString("PostalCode")
-                ));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     @FXML
